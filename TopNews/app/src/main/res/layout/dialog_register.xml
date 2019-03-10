@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/colorWhite"
+                                             android:padding="10dp">
+
+	<ImageView
+			android:id="@+id/iv_dialog_close_register"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:src="@drawable/close"
+			app:layout_constraintEnd_toEndOf="parent"/>
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="30dp"
+			android:orientation="vertical"
+			app:layout_constraintTop_toBottomOf="@+id/iv_dialog_close_register">
+
+		<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="@string/register_title"
+				android:textSize="23dp"/>
+
+		<android.support.constraint.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="40dp">
+
+			<EditText
+					android:id="@+id/et_dialog_account_register"
+					android:layout_width="match_parent"
+					android:layout_height="46dp"
+					android:background="@drawable/edit_text_bg"
+					android:hint="帐号"
+					android:padding="10dp"/>
+		</android.support.constraint.ConstraintLayout>
+
+		<EditText
+				android:id="@+id/et_dialog_password_register"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:clickable="true"
+				android:background="@drawable/edit_text_bg"
+				android:hint="请输入密码"
+				android:inputType="textPassword"
+				android:padding="10dp"/>
+
+		<EditText
+				android:id="@+id/et_dialog_password_confirm"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:clickable="true"
+				android:inputType="textPassword"
+				android:background="@drawable/edit_text_bg"
+				android:hint="再次输入密码"
+				android:padding="10dp"/>
+
+		<Button
+				android:id="@+id/btn_dialog_register"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:background="@drawable/selector_login"
+				android:text="注册"
+				android:textColor="@color/colorWhite"
+				android:textStyle="bold"/>
+
+	</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

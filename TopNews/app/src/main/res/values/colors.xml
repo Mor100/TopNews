@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryNormal">#aa3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorTitleBackground">#F85959</color>
+    <color name="colorNormal">#515051</color>
+    <color name="colorBackgroundMine">#D43D3D</color>
+    <color name="colorHeadPortrait">#90ffffff</color>
+    <color name="colorTitleText">#ffffff</color>
+    <color name="colorMineFragmentBackground">#F3F5F4</color>
+    <color name="colorMineFragmentDivider">#E6E8E7</color>
+    <color name="colorMineFragmentItemPressed">#dddddd</color>
+    <color name="colorWhite">#ffffffff</color>
+    <color name="colorToolbarBackground">#D43D3D</color>
+    <color name="colorButtonBackground">#C70505</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorBlack">#000000</color>
+</resources>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/colorWhite"
+                                             android:padding="10dp">
+
+	<ImageView
+			android:id="@+id/iv_dialog_close"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:src="@drawable/close"
+			app:layout_constraintEnd_toEndOf="parent"/>
+
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="30dp"
+			android:orientation="vertical"
+			app:layout_constraintTop_toBottomOf="@+id/iv_dialog_close">
+
+		<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="@string/login_title"
+				android:textSize="23dp"/>
+
+		<android.support.constraint.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="40dp">
+
+			<EditText
+					android:id="@+id/et_dialog_phone_number_account"
+					android:layout_width="match_parent"
+					android:layout_height="46dp"
+					android:background="@drawable/edit_text_bg"
+					android:hint="手机号/账号"
+					android:padding="10dp"/>
+
+		</android.support.constraint.ConstraintLayout>
+
+		<EditText
+				android:id="@+id/et_dialog_password"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:background="@drawable/edit_text_bg"
+				android:hint="请输入密码"
+				android:inputType="textPassword"
+				android:padding="10dp"/>
+
+		<Button
+				android:id="@+id/btn_dialog_login"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:background="@drawable/selector_login"
+				android:text="进入头条"
+				android:textColor="@color/colorWhite"
+				android:textStyle="bold"/>
+
+		<android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+		                                             android:layout_height="wrap_content"
+		                                             android:layout_marginTop="5dp">
+			<TextView
+					android:id="@+id/tv_dialog_register"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="10dp"
+					android:clickable="true"
+					android:background="@drawable/selector_text_view"
+					android:text="注册账号"
+					android:focusable="true"/>
+			<TextView
+					app:layout_constraintRight_toRightOf="parent"
+					android:layout_gravity="right"
+					android:id="@+id/tv_dialog_message_login"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="10dp"
+					android:clickable="true"
+					android:textColor="@color/colorPrimary"
+					android:background="@drawable/selector_text_view"
+					android:text="短信登录"
+					android:focusable="true"/>
+
+		</android.support.constraint.ConstraintLayout>
+	</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
