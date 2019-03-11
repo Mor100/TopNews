@@ -1,14 +1,22 @@
 package com.news;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TabHost;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,6 +24,7 @@ public class StartActivity extends AppCompatActivity {
     private TextView tvStart;
     private int second = 5;
 
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,16 +33,24 @@ public class StartActivity extends AppCompatActivity {
         tvStart = findViewById(R.id.tv_start);
         final Timer timer = new Timer();
 
+        shortcut(this);
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        second--;
+                        tvStart.setText("跳过 "+ second);
+                        if (second == 1) {
+                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                            timer.cancel();
+                            finish();
+                        }
+                    }
+                });
 
-                second--;
-                if (second == 0) {
-                    startActivity(new Intent(StartActivity.this, MainActivity.class));
-                    timer.cancel();
-                    finish();
-                }
             }
         }, 0, 1000);
 
@@ -46,10 +63,27 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        setStateBarColor();
+
+    }
+
+    void setStateBarColor(){
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(getResources().getColor(R.color.colorTransparent));
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
+    void shortcut(Context context){
+        ShortcutInfo info = new ShortcutInfo.Builder(this,SHORTCUT_SERVICE)
+                .setShortLabel("联系我们")
+                .setIcon(Icon.createWithResource(context,R.drawable.telefono_telephone))
+                .setIntent(new Intent(context,ConnectionUsActivity.class).setAction(Intent.ACTION_VIEW))
+                .build();
+
+        ShortcutManager manager = getSystemService(ShortcutManager.class);
+        manager.setDynamicShortcuts(Arrays.asList(info));
     }
 }
