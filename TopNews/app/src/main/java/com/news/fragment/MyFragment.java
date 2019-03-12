@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -52,6 +54,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private EditText etDialogPhoneNumberAccount, etDialogAccountRegister, etDialogPassword, etDialogPasswordRegister,
             getEtDialogPasswordConfirm;
     private Button btnLogin, btnRegister;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -93,6 +97,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     }
 
     void initData() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         Bundle bundle = getArguments();
         String userName = bundle.getString("loginName");
         if (userName != null && !"".equals(userName)) {
@@ -133,6 +139,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            //我的关注
             case R.id.ll_mine_focus:
                 if (!"".equals(tvLoginName.getText().toString())) {
                     Intent myFocusIntent = new Intent(getActivity(), MyFocusActivity.class);
@@ -148,38 +155,47 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                     }, null);
                 }
                 break;
-
+            //淘宝商城
             case R.id.ll_mine_taobao:
                 startActivity(new Intent(getActivity(), TaobaoActivity.class));
                 break;
-
+            //京东特供
             case R.id.ll_mine_jingdong:
                 startActivity(new Intent(getActivity(), JingDongActivity.class));
                 break;
-
+            //关于我们
             case R.id.ll_mine_connection_us:
                 startActivity(new Intent(getActivity(), ConnectionUsActivity.class));
                 break;
-
+            //检查版本
             case R.id.ll_mine_check_version:
                 Toast.makeText(getActivity(), "已是最新版本", Toast.LENGTH_LONG).show();
                 break;
-
+            //登录按钮
             case R.id.ll_mine_exit:
+                //用户未登录状态
                 if ("".equals(tvLoginName.getText().toString())){
                     loginDialog = new LoginDialog(getActivity(), R.style.LoginDialog, dialogView);
                     loginDialog.show();
+                    //用户已登录状态
                 }else {
+                    //初始化用户名和头像
                     tvLoginName.setText("");
                     ivHead.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon));
-
+                    //清空sharedpreferences中的数据
+                    editor = preferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    Log.e("userName",preferences.getString("userName",""));
+                    Log.e("password",preferences.getString("password",""));
+                    //清空post数据
                     EventBus.getDefault().post(new Event());
-
+                    //初始化登录按钮
                     tvUserLoginExit.setText(R.string.login);
                     tvUserLoginExit.setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 break;
-
+            //头像
             case R.id.iv_head:
                 if ("".equals(tvLoginName.getText().toString())) {
                     loginDialog = new LoginDialog(getActivity(), R.style.LoginDialog, dialogView);
@@ -190,26 +206,33 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                     }
                 }
                 break;
-
+            //短信验证
             case R.id.tv_dialog_check_code_register:
                 break;
-
+            //登录按钮
             case R.id.btn_dialog_login:
                 User userLogin = SQLUtils.queryUserByUserName(etDialogPhoneNumberAccount.getText().toString());
 
                 if (userLogin.getUserName() != null && !"".equals(userLogin.getUserName())) {
-
+                    //登录成功
                     if (userLogin.getPassword().equals(etDialogPassword.getText().toString())) {
+                        //设置用户名和头像
                         tvLoginName.setText(userLogin.getUserName());
-
                         setIvHead(userLogin);
-
+                        //关闭对话框
                         loginDialog.dismiss();
                         ViewGroup parent = (ViewGroup) dialogView.getParent();
                         parent.removeView(dialogView);
-
+                        //数据传递
                         EventBus.getDefault().post(new Event(userLogin.getUserName()));
-
+                        //将用户名和密码存储到sharedpreferences
+                        editor = preferences.edit();
+                        editor.putString("userName",userLogin.getUserName());
+                        editor.putString("password",userLogin.getPassword());
+                        editor.apply();
+                        Log.e("userName",preferences.getString("userName",""));
+                        Log.e("password",preferences.getString("password",""));
+                        //清空文本框，登录改为退出
                         etDialogPhoneNumberAccount.setText("");
                         etDialogPassword.setText("");
                         tvUserLoginExit.setText(R.string.exit);
@@ -236,7 +259,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                     DialogUtils.showDialog(getActivity(), "提示", "请输入用户名", null, null);
                 }
                 break;
-
+            //注册按钮（注册界面）
             case R.id.btn_dialog_register:
                 User user = SQLUtils.queryUserByUserName(etDialogAccountRegister.getText().toString());
 
@@ -272,7 +295,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
-
+            //注册按钮（登录界面）
             case R.id.tv_dialog_register:
                 registerDialog = new RegisterDialog(getActivity(), R.style.LoginDialog, dialogRegisterView);
                 registerDialog.show();

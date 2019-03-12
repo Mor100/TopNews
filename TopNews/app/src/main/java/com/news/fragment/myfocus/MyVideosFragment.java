@@ -19,6 +19,7 @@ import com.news.adapter.VideoAdapterForMyFocus;
 import com.news.bean.Video;
 import com.news.itf.OnImageViewClick;
 import com.news.util.SQLUtils;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,6 @@ public class MyVideosFragment extends Fragment {
                 public void onClick(View view, int position) {
                     Video video = videoList.get(position);
                     SQLUtils.removeVideoByVideoId(video.getVideoId());
-                    video.setFavorite("null");
-                    SQLUtils.updateVideoByVideoId(video);
 
                     videoList.remove(position);
                     adapter.notifyDataSetChanged();
@@ -77,8 +76,6 @@ public class MyVideosFragment extends Fragment {
                 }
             });
         }
-
-
 
     }
 

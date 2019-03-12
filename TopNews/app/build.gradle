@@ -44,7 +44,7 @@ dependencies {
 }
 
 greendao {
-    schemaVersion 10
+    schemaVersion 12
     daoPackage 'com.news.greendao'
     targetGenDir 'src/main/java'
 }

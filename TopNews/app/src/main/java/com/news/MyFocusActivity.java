@@ -1,5 +1,6 @@
 package com.news;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -51,7 +52,7 @@ public class MyFocusActivity extends AppCompatActivity {
 
         loginName = getIntent().getStringExtra("loginName");
 
-        final Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("loginName",loginName);
         fragments[0].setArguments(bundle);
         fragments[1].setArguments(bundle);
@@ -65,7 +66,9 @@ public class MyFocusActivity extends AppCompatActivity {
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(getColor(R.color.colorMineFragmentBackground));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.setStatusBarColor(getColor(R.color.colorMineFragmentBackground));
+        }
     }
 
 }

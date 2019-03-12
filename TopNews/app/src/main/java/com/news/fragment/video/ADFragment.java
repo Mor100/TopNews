@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.jzvd.Jzvd;
 import com.news.R;
 import com.news.adapter.VideoAdapter;
@@ -30,9 +33,12 @@ import com.news.url.UrlConnection;
 import com.news.util.DialogUtils;
 import com.news.util.SQLUtils;
 import com.news.util.VideoUtils;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.news.util.VideoUtils.readJSON;
 
 public class ADFragment extends Fragment {
     private RecyclerView rvVideo;
@@ -94,8 +100,6 @@ public class ADFragment extends Fragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         if ("关注".equals(tvFocus.getText())) {
-                            videoList.get(position).setFavorite(loginName);
-                            SQLUtils.updateVideo(videoList.get(position));
 
                             tvFocus.setText("已关注");
                             tvFocus.setVisibility(View.VISIBLE);

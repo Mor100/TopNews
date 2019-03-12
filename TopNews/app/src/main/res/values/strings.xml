@@ -98,6 +98,6 @@
 	<string name="login_title">登录你的头条，精彩永不丢失</string>
 	<string name="register_title">账号注册</string>
 	<string name="string_focus">关注</string>
-	<string name="exit">退出登录</string>
-	<string name="login">用户登录</string>
+	<string name="exit">注销</string>
+	<string name="login">登录</string>
 </resources>

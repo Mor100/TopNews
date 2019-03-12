@@ -36,7 +36,7 @@ public class VideoDao extends AbstractDao<Video, Long> {
         public final static Property Name = new Property(4, String.class, "name", false, "NAME");
         public final static Property Icon = new Property(5, String.class, "icon", false, "ICON");
         public final static Property Category = new Property(6, String.class, "category", false, "CATEGORY");
-        public final static Property Favorite = new Property(7, String.class, "favorite", false, "FAVORITE");
+        public final static Property Id = new Property(7, long.class, "id", false, "ID");
     }
 
     private DaoSession daoSession;
@@ -63,7 +63,7 @@ public class VideoDao extends AbstractDao<Video, Long> {
                 "\"NAME\" TEXT," + // 4: name
                 "\"ICON\" TEXT," + // 5: icon
                 "\"CATEGORY\" TEXT," + // 6: category
-                "\"FAVORITE\" TEXT);"); // 7: favorite
+                "\"ID\" INTEGER NOT NULL );"); // 7: id
     }
 
     /** Drops the underlying database table. */
@@ -110,11 +110,7 @@ public class VideoDao extends AbstractDao<Video, Long> {
         if (category != null) {
             stmt.bindString(7, category);
         }
- 
-        String favorite = entity.getFavorite();
-        if (favorite != null) {
-            stmt.bindString(8, favorite);
-        }
+        stmt.bindLong(8, entity.getId());
     }
 
     @Override
@@ -155,11 +151,7 @@ public class VideoDao extends AbstractDao<Video, Long> {
         if (category != null) {
             stmt.bindString(7, category);
         }
- 
-        String favorite = entity.getFavorite();
-        if (favorite != null) {
-            stmt.bindString(8, favorite);
-        }
+        stmt.bindLong(8, entity.getId());
     }
 
     @Override
@@ -183,7 +175,7 @@ public class VideoDao extends AbstractDao<Video, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // name
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // icon
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // category
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // favorite
+            cursor.getLong(offset + 7) // id
         );
         return entity;
     }
@@ -197,7 +189,7 @@ public class VideoDao extends AbstractDao<Video, Long> {
         entity.setName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setIcon(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setCategory(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setFavorite(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setId(cursor.getLong(offset + 7));
      }
     
     @Override

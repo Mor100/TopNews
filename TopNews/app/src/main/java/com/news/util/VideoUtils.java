@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.news.itf.URLCallBack;
 import com.news.url.UrlConnection;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -68,19 +69,21 @@ public class VideoUtils {
             JSONObject data2 = content.getJSONObject("data");
             String title = data2.getString("title");
             String playUrl = data2.getString("playUrl");
+            long id = data2.getLongValue("id");
             JSONObject cover = data2.getJSONObject("cover");
             String feed = cover.getString("feed");
             JSONObject provider = data2.getJSONObject("provider");
             String name = provider.getString("name");
             String icon = provider.getString("icon");
 
+            Log.e("id", String.valueOf(id));
             Log.e("description",description);
             Log.e("playUrl",playUrl);
             Log.e("title",title);
             Log.e("feed",feed);
             Log.e("name",name);
             Log.e("icon",icon);
-            Video video = new Video(playUrl, title, feed, name, icon,description,"null");
+            Video video = new Video(playUrl, title, feed, name, icon,description,id);
             videoList.add(video);
             SQLUtils.addVideo(video);
         }

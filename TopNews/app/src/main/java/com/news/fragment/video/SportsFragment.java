@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,16 +17,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.jzvd.Jzvd;
 import com.news.R;
 import com.news.adapter.VideoAdapter;
 import com.news.bean.Video;
 import com.news.itf.OnImageViewClick;
 import com.news.itf.OnTextViewClick;
+import com.news.itf.URLCallBack;
 import com.news.url.UrlConnection;
 import com.news.util.DialogUtils;
 import com.news.util.SQLUtils;
 import com.news.util.VideoUtils;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +94,6 @@ public class SportsFragment extends Fragment {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         if ("关注".equals(tvFocus.getText())) {
-                            videoList.get(position).setFavorite(loginName);
-                            SQLUtils.updateVideo(videoList.get(position));
 
                             tvFocus.setText("已关注");
                             tvFocus.setVisibility(View.VISIBLE);

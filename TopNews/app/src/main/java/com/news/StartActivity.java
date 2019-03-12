@@ -1,28 +1,28 @@
 package com.news;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TabHost;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class StartActivity extends AppCompatActivity {
     private TextView tvStart;
     private int second = 5;
+    private SharedPreferences preferences;
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Override
@@ -42,7 +42,7 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         second--;
-                        tvStart.setText("跳过 "+ second);
+                        tvStart.setText("跳过 " + second);
                         if (second == 1) {
                             startActivity(new Intent(StartActivity.this, MainActivity.class));
                             timer.cancel();
@@ -67,7 +67,7 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
-    void setStateBarColor(){
+    void setStateBarColor() {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -76,14 +76,25 @@ public class StartActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
-    void shortcut(Context context){
-        ShortcutInfo info = new ShortcutInfo.Builder(this,SHORTCUT_SERVICE)
+    void shortcut(Context context) {
+        ShortcutInfo infoConnectToUs = new ShortcutInfo.Builder(this, "SHORTCUT_CONNECT_TO_US")
                 .setShortLabel("联系我们")
-                .setIcon(Icon.createWithResource(context,R.drawable.telefono_telephone))
-                .setIntent(new Intent(context,ConnectionUsActivity.class).setAction(Intent.ACTION_VIEW))
+                .setIcon(Icon.createWithResource(context, R.drawable.telefono_telephone))
+                .setIntent(new Intent(context, ConnectionUsActivity.class).setAction(Intent.ACTION_VIEW))
                 .build();
 
+        ShortcutInfo infoShare = new ShortcutInfo.Builder(this, "SHORTCUT_SHARE")
+                .setShortLabel("分享今日头条")
+                .setIcon(Icon.createWithResource(context, R.drawable.share))
+                .setIntent(new Intent().setAction("android.intent.action.VIEW").setData(Uri.parse("http://count.liqucn.com/d.php?id=86824&urlos=android&from_type=web")))
+                .build();
+
+        List<ShortcutInfo> infoList = new ArrayList<>();
+        infoList.add(infoConnectToUs);
+        infoList.add(infoShare);
+
         ShortcutManager manager = getSystemService(ShortcutManager.class);
-        manager.setDynamicShortcuts(Arrays.asList(info));
+        manager.setDynamicShortcuts(infoList);
     }
+
 }

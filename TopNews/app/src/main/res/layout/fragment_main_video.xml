@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         app:xTabDisplayNum="5"
         app:xTabMode="scrollable"
+        app:xTabTextColor="#000000"
         app:xTabSelectedTextColor="@color/colorAccent"
     app:xTabSelectedTextSize="18sp"></com.androidkun.xtablayout.XTabLayout>
     <View

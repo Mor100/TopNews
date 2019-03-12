@@ -1,11 +1,17 @@
 package com.news.fragment.myfocus;
 
 import android.app.AlertDialog;
+import android.app.Service;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.util.Log;
@@ -31,6 +37,7 @@ public class MyNewsFragment extends Fragment {
     private List<NewsBean> newsList;
     private PullLoadMoreRecyclerView recyclerView;
     private RightImageRecyclerViewAdapter recyclerViewAdapter;
+    private Vibrator vibrator;
     private String loginName;
 
     @Nullable
@@ -44,6 +51,8 @@ public class MyNewsFragment extends Fragment {
 
     private void initView() {
         recyclerView = view.findViewById(R.id.rv);
+
+        vibrator = (Vibrator) getActivity().getSystemService(Service.VIBRATOR_SERVICE);
     }
 
     private void initData() {
@@ -72,6 +81,11 @@ public class MyNewsFragment extends Fragment {
 
                 @Override
                 public void onItemLongClick(final int position) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(500,2));
+                    }else {
+                        vibrator.vibrate(500);
+                    }
                     new AlertDialog.Builder(getActivity())
                             .setTitle("删除")
                             .setMessage("您想要删除此新闻吗")

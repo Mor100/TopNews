@@ -1,16 +1,17 @@
 package com.news;
 
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.news.bean.Event;
 import com.news.fragment.MainFragment;
 import com.news.fragment.MyFragment;
@@ -27,13 +28,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private VideoFragment videoFragment;
     private MyFragment myFragment;
     private String loginName;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initData();
         setListener();
+    }
+
+    private void initData(){
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = preferences.getString("userName","");
+        if (userName!=null&&!"".equals(userName)){
+            loginName = userName;
+        }
     }
 
     private void initView(){
@@ -53,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.ll_container,mainFragment).commit();
-        Window window = getWindow();
 
+        Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(getResources().getColor(R.color.colorToolbarBackground));

@@ -1,23 +1,29 @@
 package com.news;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.*;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
-import com.mylhyl.superdialog.SuperDialog;
 import com.news.bean.NewsBean;
 import com.news.bean.UserJoinNewsBean;
-import com.news.util.DialogUtils;
 import com.news.util.SQLUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import static android.view.KeyEvent.KEYCODE_BACK;
 
 public class NewsDetailActivity extends AppCompatActivity {
     private WebView webView;
@@ -46,9 +52,23 @@ public class NewsDetailActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("JavascriptInterface")
     public void initData() {
         newsBean = (NewsBean) getIntent().getSerializableExtra("news");
         webView.loadUrl(newsBean.getContentUrl());
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.loadUrl(request.getUrl().toString());
+                toolbar.setTitle("");
+                return true;
+            }
+
+        });
+
         toolbar.setTitle(newsBean.getTitle());
 
         loginName = getIntent().getStringExtra("loginName");
@@ -59,7 +79,11 @@ public class NewsDetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                if (webView.canGoBack()){
+                    webView.goBack();
+                }else {
+                    finish();
+                }
             }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -145,5 +169,13 @@ public class NewsDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KEYCODE_BACK && webView.canGoBack()){
+            webView.goBack();
+        }
+        return true;
     }
 }

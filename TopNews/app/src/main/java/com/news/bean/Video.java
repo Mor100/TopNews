@@ -26,7 +26,7 @@ public class Video {
 
     private String category;
 
-    private String favorite;
+    private long id;
 
     @ToMany
     @JoinEntity(entity = UserJoinVideo.class,sourceProperty = "videoId",targetProperty = "userName")
@@ -40,14 +40,14 @@ public class Video {
     @Generated(hash = 2004496110)
     private transient VideoDao myDao;
 
-    public Video(String url, String title, String image, String name, String icon,String category,String favorite) {
+    public Video(String url, String title, String image, String name, String icon,String category,long id) {
         this.url = url;
         this.title = title;
         this.image = image;
         this.name = name;
         this.icon = icon;
         this.category = category;
-        this.favorite = favorite;
+        this.id = id;
     }
 
     public Video(){}
@@ -55,7 +55,7 @@ public class Video {
     @Keep
     @Generated(hash = 905307214)
     public Video(Long videoId, String url, String title, String image, String name, String icon, String category,
-            String favorite) {
+            long id) {
         this.videoId = videoId;
         this.url = url;
         this.title = title;
@@ -63,7 +63,7 @@ public class Video {
         this.name = name;
         this.icon = icon;
         this.category = category;
-        this.favorite = favorite;
+        this.id = id;
     }
 
     public Long getVideoId() {
@@ -122,12 +122,12 @@ public class Video {
         return category;
     }
 
-    public String getFavorite() {
-        return favorite;
+    public long getId() {
+        return id;
     }
 
-    public void setFavorite(String favorite) {
-        this.favorite = favorite;
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
