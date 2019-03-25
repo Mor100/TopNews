@@ -14,9 +14,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.DayNight">
+        <item name="colorPrimary">@color/colorBlack</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorBackgroundMine</item>
+        <item name="windowNoTitle">?android:windowNoTitle</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="LoginDialog" parent="@android:style/Theme.Holo.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:layout_width">match_parent</item>

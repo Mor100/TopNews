@@ -52,7 +52,7 @@ public class MyNewsFragment extends Fragment {
     private void initView() {
         recyclerView = view.findViewById(R.id.rv);
 
-        vibrator = (Vibrator) getActivity().getSystemService(Service.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) getActivity().getSystemService(getActivity().VIBRATOR_SERVICE);
     }
 
     private void initData() {
@@ -82,9 +82,9 @@ public class MyNewsFragment extends Fragment {
                 @Override
                 public void onItemLongClick(final int position) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        vibrator.vibrate(VibrationEffect.createOneShot(500,2));
+                        vibrator.vibrate(VibrationEffect.createOneShot(1000,2));
                     }else {
-                        vibrator.vibrate(500);
+                        vibrator.vibrate(1000);
                     }
                     new AlertDialog.Builder(getActivity())
                             .setTitle("删除")

@@ -9,6 +9,7 @@ import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,6 +36,15 @@ public class StartActivity extends AppCompatActivity {
 
         shortcut(this);
 
+        onPageJump(timer);
+
+        onTextViewClick(tvStart,timer);
+
+        setStateBarColor();
+
+    }
+
+    void onPageJump(final Timer timer){
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -53,7 +63,9 @@ public class StartActivity extends AppCompatActivity {
 
             }
         }, 0, 1000);
+    }
 
+    void onTextViewClick(TextView tvStart,final Timer timer){
         tvStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,9 +74,6 @@ public class StartActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        setStateBarColor();
-
     }
 
     void setStateBarColor() {
@@ -73,6 +82,10 @@ public class StartActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(getResources().getColor(R.color.colorTransparent));
         }
+    }
+
+    void getUserNameFromSharedPreferences(){
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
@@ -84,9 +97,9 @@ public class StartActivity extends AppCompatActivity {
                 .build();
 
         ShortcutInfo infoShare = new ShortcutInfo.Builder(this, "SHORTCUT_SHARE")
-                .setShortLabel("分享今日头条")
+                .setShortLabel("分享头条")
                 .setIcon(Icon.createWithResource(context, R.drawable.share))
-                .setIntent(new Intent().setAction("android.intent.action.VIEW").setData(Uri.parse("http://count.liqucn.com/d.php?id=86824&urlos=android&from_type=web")))
+                .setIntent(new Intent().setAction("android.intent.action.VIEW").setData(Uri.parse("https://github.com/Mor100/TopNews")))
                 .build();
 
         List<ShortcutInfo> infoList = new ArrayList<>();

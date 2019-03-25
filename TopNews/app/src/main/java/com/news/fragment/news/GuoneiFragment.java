@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.news.NewsDetailActivity;
 import com.news.R;
-import com.news.adapter.LeftImageRecyclerViewAdapter;
 import com.news.adapter.MiddleImageRecyclerViewAdapter;
 import com.news.bean.NewsBean;
 import com.news.itf.OnItemClickListener;

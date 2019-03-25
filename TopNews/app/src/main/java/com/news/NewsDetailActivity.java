@@ -1,23 +1,24 @@
 package com.news;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.*;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Toast;
 import com.news.bean.NewsBean;
 import com.news.bean.UserJoinNewsBean;
+import com.news.util.NewsUtils;
 import com.news.util.SQLUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -56,18 +57,6 @@ public class NewsDetailActivity extends AppCompatActivity {
     public void initData() {
         newsBean = (NewsBean) getIntent().getSerializableExtra("news");
         webView.loadUrl(newsBean.getContentUrl());
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
-                toolbar.setTitle("");
-                return true;
-            }
-
-        });
 
         toolbar.setTitle(newsBean.getTitle());
 
@@ -79,9 +68,9 @@ public class NewsDetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (webView.canGoBack()){
+                if (webView.canGoBack()) {
                     webView.goBack();
-                }else {
+                } else {
                     finish();
                 }
             }
@@ -93,8 +82,11 @@ public class NewsDetailActivity extends AppCompatActivity {
                     case R.id.share:
                         if (!"".equals(loginName)) {
                             Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.setType("text/*");
-                            intent.putExtra(Intent.EXTRA_TEXT, newsBean.getContentUrl());
+                            intent.setType("image/*");
+                            Uri uri = Uri.parse(newsBean.getImageUrl());
+                            Log.e("图片路径", uri.toString());
+                            intent.putExtra(Intent.EXTRA_STREAM,uri);
+                            intent.putExtra(Intent.EXTRA_TEXT,newsBean.getTitle()+"\n"+newsBean.getContentUrl());
                             startActivity(Intent.createChooser(intent, "选择分享的应用"));
                         } else {
                             showDialog();
@@ -138,7 +130,6 @@ public class NewsDetailActivity extends AppCompatActivity {
                 }).show();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_share, menu);
@@ -173,7 +164,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KEYCODE_BACK && webView.canGoBack()){
+        if (keyCode == KEYCODE_BACK && webView.canGoBack()) {
             webView.goBack();
         }
         return true;

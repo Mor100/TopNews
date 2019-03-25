@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -64,9 +65,12 @@ public class LifeFragment extends Fragment {
         videoAdapter.setOnImageViewClick(new OnImageViewClick() {
             @Override
             public void onClick(View view, int position) {
+                Video video = videoList.get(position);
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/*");
-                intent.putExtra("url", videoList.get(position).getUrl());
+                intent.setType("image/*");
+                Uri uri = Uri.parse(video.getImage());
+                intent.putExtra(Intent.EXTRA_STREAM,uri);
+                intent.putExtra(Intent.EXTRA_TEXT,video.getTitle() + "\n" + video.getUrl());
                 startActivity(Intent.createChooser(intent, "请选择分享的平台"));
             }
         });

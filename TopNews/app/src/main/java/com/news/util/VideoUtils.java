@@ -1,12 +1,17 @@
 package com.news.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.DrawableRes;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -110,5 +115,14 @@ public class VideoUtils {
                 }
             });
         }
+    }
+
+    public static Uri getResourcesUri(@DrawableRes int id,Context context) {
+        Resources resources = context.getResources();
+        String uriPath = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                resources.getResourcePackageName(id) + "/" +
+                resources.getResourceTypeName(id) + "/" +
+                resources.getResourceEntryName(id);
+        return Uri.parse(uriPath);
     }
 }

@@ -4,16 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +17,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.jzvd.Jzvd;
 import com.news.R;
 import com.news.adapter.VideoAdapter;
 import com.news.bean.Video;
 import com.news.itf.OnImageViewClick;
 import com.news.itf.OnTextViewClick;
-import com.news.itf.URLCallBack;
 import com.news.url.UrlConnection;
 import com.news.util.DialogUtils;
 import com.news.util.SQLUtils;
 import com.news.util.VideoUtils;
-import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.news.util.VideoUtils.readJSON;
 
 public class ADFragment extends Fragment {
     private RecyclerView rvVideo;
@@ -51,7 +42,7 @@ public class ADFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_video, container, false);
         rvVideo = view.findViewById(R.id.rv_video);
 
@@ -70,9 +61,12 @@ public class ADFragment extends Fragment {
         videoAdapter.setOnImageViewClick(new OnImageViewClick() {
             @Override
             public void onClick(View view, int position) {
+                Video video = videoList.get(position);
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/*");
-                intent.putExtra("url", videoList.get(position).getUrl());
+                intent.setType("image/*");
+                Uri uri = Uri.parse(video.getImage());
+                intent.putExtra(Intent.EXTRA_STREAM,uri);
+                intent.putExtra(Intent.EXTRA_TEXT,video.getTitle() + "\n" + video.getUrl());
                 startActivity(Intent.createChooser(intent, "请选择分享的平台"));
             }
         });
