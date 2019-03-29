@@ -66,6 +66,7 @@ public class YuleFragment extends Fragment {
         });
 
         rv.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            //下拉刷新
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
@@ -90,7 +91,7 @@ public class YuleFragment extends Fragment {
                     }
                 }, 800);
             }
-
+            //上拉加载更多
             @Override
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable() {

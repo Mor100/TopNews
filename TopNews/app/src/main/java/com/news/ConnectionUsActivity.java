@@ -85,7 +85,7 @@ public class ConnectionUsActivity extends AppCompatActivity {
 
     private void onCall() {
         if (checkPermission()) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "15988337947"));
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "1010100100"));
             startActivity(intent);
         }
     }
