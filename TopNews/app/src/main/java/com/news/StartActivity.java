@@ -12,18 +12,22 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class StartActivity extends AppCompatActivity {
     private TextView tvStart;
     private int second = 5;
     private SharedPreferences preferences;
+    private String loginName;
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Override
@@ -34,17 +38,28 @@ public class StartActivity extends AppCompatActivity {
         tvStart = findViewById(R.id.tv_start);
         final Timer timer = new Timer();
 
+        initData();
+
         shortcut(this);
 
         onPageJump(timer);
 
-        onTextViewClick(tvStart,timer);
+        onTextViewClick(tvStart, timer);
 
         setStateBarColor();
 
     }
 
-    void onPageJump(final Timer timer){
+    void initData() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = preferences.getString("userName", "");
+        if (userName != null && !"".equals(userName)) {
+            Log.e("userName",userName);
+            loginName = userName;
+        }
+    }
+
+    void onPageJump(final Timer timer) {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -54,7 +69,8 @@ public class StartActivity extends AppCompatActivity {
                         second--;
                         tvStart.setText("跳过 " + second);
                         if (second == 1) {
-                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                            startActivity(new Intent(StartActivity.this, MainActivity.class)
+                                    .putExtra("loginName",loginName));
                             timer.cancel();
                             finish();
                         }
@@ -65,7 +81,7 @@ public class StartActivity extends AppCompatActivity {
         }, 0, 1000);
     }
 
-    void onTextViewClick(TextView tvStart,final Timer timer){
+    void onTextViewClick(TextView tvStart, final Timer timer) {
         tvStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +100,7 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
-    void getUserNameFromSharedPreferences(){
+    void getUserNameFromSharedPreferences() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 

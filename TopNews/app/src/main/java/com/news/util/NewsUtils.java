@@ -9,8 +9,6 @@ import android.support.annotation.DrawableRes;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ScrollView;
-import android.widget.Toast;
 import com.news.R;
 import com.news.bean.NewsBean;
 import com.news.itf.URLCallBack;
@@ -25,7 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +40,7 @@ public class NewsUtils {
                     HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
                     connection.connect();
                     connection.setRequestMethod("GET");
+                    connection.setConnectTimeout(5000);
                     InputStream inputStream = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     String line;
@@ -51,11 +49,12 @@ public class NewsUtils {
                     }
                     reader.close();
                     inputStream.close();
+                    Log.i("json格式数据", result.toString());
+                    return result.toString();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return "";
                 }
-                Log.i("json格式数据", result.toString());
-                return result.toString();
             }
 
             @Override

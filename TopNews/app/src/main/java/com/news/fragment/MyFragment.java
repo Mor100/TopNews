@@ -1,8 +1,6 @@
 package com.news.fragment;
 
 import android.Manifest;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +21,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +48,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private ImageViewPlus ivHead;
     private LoginDialog loginDialog;
     private RegisterDialog registerDialog;
-    private TextView tvDialogRegister, tvLoginName,tvUserLoginExit;
+    private TextView tvDialogRegister, tvLoginName, tvUserLoginExit;
     private EditText etDialogPhoneNumberAccount, etDialogAccountRegister, etDialogPassword, etDialogPasswordRegister,
             getEtDialogPasswordConfirm;
     private Button btnLogin, btnRegister;
@@ -101,15 +98,17 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         Bundle bundle = getArguments();
-        String userName = bundle.getString("loginName");
-        if (userName != null && !"".equals(userName)) {
-            Log.i("userName",userName);
-            tvLoginName.setText(userName);
-            tvUserLoginExit.setText(R.string.exit);
-            tvUserLoginExit.setTextColor(getResources().getColor(R.color.colorAccent));
+        if (bundle != null) {
+            String userName = bundle.getString("loginName");
+            if (userName != null && !"".equals(userName)) {
+                Log.i("userName", userName);
+                tvLoginName.setText(userName);
+                tvUserLoginExit.setText(R.string.exit);
+                tvUserLoginExit.setTextColor(getResources().getColor(R.color.colorAccent));
 
-            User user = SQLUtils.queryUserByUserName(userName);
-            setIvHead(user);
+                User user = SQLUtils.queryUserByUserName(userName);
+                setIvHead(user);
+            }
         }
     }
 
@@ -175,11 +174,11 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             //登录按钮
             case R.id.ll_mine_exit:
                 //用户未登录状态
-                if ("".equals(tvLoginName.getText().toString())){
+                if ("".equals(tvLoginName.getText().toString())) {
                     loginDialog = new LoginDialog(getActivity(), R.style.LoginDialog, dialogView);
                     loginDialog.show();
                     //用户已登录状态
-                }else {
+                } else {
                     //初始化用户名和头像
                     tvLoginName.setText("");
                     ivHead.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.icon));
@@ -187,8 +186,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                     editor = preferences.edit();
                     editor.clear();
                     editor.apply();
-                    Log.e("userName",preferences.getString("userName",""));
-                    Log.e("password",preferences.getString("password",""));
+                    Log.e("userName", preferences.getString("userName", ""));
+                    Log.e("password", preferences.getString("password", ""));
                     //清空post数据
                     EventBus.getDefault().post(new Event());
                     //初始化登录按钮
@@ -228,11 +227,9 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                         EventBus.getDefault().post(new Event(userLogin.getUserName()));
                         //将用户名和密码存储到sharedpreferences
                         editor = preferences.edit();
-                        editor.putString("userName",userLogin.getUserName());
-                        editor.putString("password",userLogin.getPassword());
+                        editor.putString("userName", userLogin.getUserName());
+                        editor.putString("password", userLogin.getPassword());
                         editor.apply();
-                        Log.e("userName",preferences.getString("userName",""));
-                        Log.e("password",preferences.getString("password",""));
                         //清空文本框，登录改为退出
                         etDialogPhoneNumberAccount.setText("");
                         etDialogPassword.setText("");
@@ -311,7 +308,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         return metrics.widthPixels;
     }
 
-    public void setIvHead(User user){
+    public void setIvHead(User user) {
         if (user.getImagePath() != null && !"".equals(user.getImagePath()))
             ivHead.setImageBitmap(BitmapFactory.decodeFile(user.getImagePath()));
     }

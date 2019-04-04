@@ -10,13 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 import android.widget.Toast;
 import com.news.NewsDetailActivity;
 import com.news.R;
-import com.news.adapter.LeftImageRecyclerViewAdapter;
 import com.news.adapter.MiddleImageRecyclerViewAdapter;
-import com.news.adapter.RightImageRecyclerViewAdapter;
 import com.news.bean.NewsBean;
 import com.news.itf.OnItemClickListener;
 import com.news.itf.URLCallBack;
@@ -27,8 +24,6 @@ import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.news.util.NewsUtils.readJSON;
 
 public class ToutiaoFragment extends Fragment {
     private PullLoadMoreRecyclerView rv;
@@ -81,7 +76,7 @@ public class ToutiaoFragment extends Fragment {
                             @Override
                             public void getData(String result) {
                                 NewsUtils.readJSON(result,temp);
-                                if (temp.get(0).getTitle().equals(newsList.get(0).getTitle())){
+                                if (temp.size()==0||temp.get(0).getTitle().equals(newsList.get(0).getTitle())){
                                     Toast.makeText(getActivity(),"暂无更多数据",Toast.LENGTH_SHORT).show();
                                 }else {
                                     newsList.clear();

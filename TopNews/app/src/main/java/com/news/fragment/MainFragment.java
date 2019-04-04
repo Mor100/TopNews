@@ -8,11 +8,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.androidkun.xtablayout.XTabLayout;
 import com.news.R;
 import com.news.adapter.ViewPagerAdapterForNews;
+import com.news.bean.Event;
 import com.news.fragment.news.*;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainFragment extends Fragment {
     private ViewPager vpNavigationList;
@@ -94,5 +97,6 @@ public class MainFragment extends Fragment {
         caijingFragment.setArguments(bundle);
         shishangFragment.setArguments(bundle);
     }
+
 
 }
