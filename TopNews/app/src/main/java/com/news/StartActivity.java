@@ -35,12 +35,14 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        shortcut(this);
+
         tvStart = findViewById(R.id.tv_start);
+
+        getUserNameFromSharedPreferences();
+
         final Timer timer = new Timer();
 
-        initData();
-
-        shortcut(this);
 
         onPageJump(timer);
 
@@ -48,15 +50,6 @@ public class StartActivity extends AppCompatActivity {
 
         setStateBarColor();
 
-    }
-
-    void initData() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String userName = preferences.getString("userName", "");
-        if (userName != null && !"".equals(userName)) {
-            Log.e("userName",userName);
-            loginName = userName;
-        }
     }
 
     void onPageJump(final Timer timer) {
@@ -86,7 +79,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 timer.cancel();
-                startActivity(new Intent(StartActivity.this, MainActivity.class));
+                startActivity(new Intent(StartActivity.this, MainActivity.class)
+                        .putExtra("loginName",loginName));
                 finish();
             }
         });
@@ -102,10 +96,16 @@ public class StartActivity extends AppCompatActivity {
 
     void getUserNameFromSharedPreferences() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = preferences.getString("userName", "");
+        if (userName != null && !"".equals(userName)) {
+            Log.e("userName",userName);
+            loginName = userName;
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     void shortcut(Context context) {
+        getUserNameFromSharedPreferences();
         ShortcutInfo infoConnectToUs = new ShortcutInfo.Builder(this, "SHORTCUT_CONNECT_TO_US")
                 .setShortLabel("联系我们")
                 .setIcon(Icon.createWithResource(context, R.drawable.telefono_telephone))
@@ -116,6 +116,12 @@ public class StartActivity extends AppCompatActivity {
                 .setShortLabel("分享头条")
                 .setIcon(Icon.createWithResource(context, R.drawable.share))
                 .setIntent(new Intent().setAction("android.intent.action.VIEW").setData(Uri.parse("https://github.com/Mor100/TopNews")))
+                .build();
+
+        ShortcutInfo infoFavorite = new ShortcutInfo.Builder(this, "SHORTCUT_FAVORITE")
+                .setShortLabel("我的关注")
+                .setIcon(Icon.createWithResource(context, R.drawable.share))
+                .setIntent(new Intent(context,MyFocusActivity.class).setAction(Intent.ACTION_VIEW))
                 .build();
 
         List<ShortcutInfo> infoList = new ArrayList<>();
